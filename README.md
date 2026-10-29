@@ -1,5 +1,7 @@
 # Subtitle Craft
 
+![Subtitle Craft compares source audio with an incorrect and corrected Russian subtitle while preserving the timing. Review uses text, audio, and video frames.](assets/subtitle-craft-cover.png)
+
 Keep the meaning. Keep the joke. Keep the timing.
 
 Subtitle Craft is an agent skill for reviewing subtitle translations, backed by
@@ -25,9 +27,10 @@ npx skills add ncherevatenko/subtitle-craft
 ```
 
 Select your agent in the installer. The Python helpers require Python 3.10 or
-later and use only the standard library. Audio checks additionally require
-access to the relevant media and an available transcription or listening tool.
-Those tools and models aren't bundled here.
+later and use only the standard library. To check audio or capture video frames,
+your agent needs access to the completed media and suitable tools, such as
+FFmpeg, a transcription or listening tool, and image inspection. Those tools
+and models aren't bundled here.
 
 ## What you get
 
@@ -35,6 +38,10 @@ The skill combines meaning-first review with checks you can reproduce:
 
 - **A translation review:** speakers, negation, numbers, relationships, idioms,
   jokes, technical terms, and the original level of explicitness.
+- **Audio checks:** extract a short source-audio clip to check what was actually
+  said, compare it with the subtitles, and flag uncertain recognition.
+- **Screenshots from the video:** extract and inspect still frames to check
+  signs, messages, labels, speakers, and visual context that text alone misses.
 - **A second pass:** check the generated subtitles against the source, including
   complete multi-caption utterances and their grammar.
 - **A delivery check:** preserve source files, record corrections, validate the
@@ -86,6 +93,20 @@ track before extracting a short sample. Compare the dialogue, captions, and
 scene context. If recognition is unclear, say what remains uncertain instead
 of inventing a line. Rebuild and recheck the whole affected utterance after
 any correction. Don't change playback.
+```
+
+### Read text or identify context in a video frame
+
+Ask for a still from the completed video when a sign, message, or visual detail
+changes how you understand the scene:
+
+```text
+Use subtitle-translation-audit to inspect 00:34:46 in this completed video.
+Extract a screenshot at that timestamp and a few nearby frames if needed.
+Read the visible sign or message, translate it, and compare it with any forced
+subtitle track. Use a short source-audio clip if the dialogue helps explain it.
+Save the inspected frames and report their timestamps. Mark unreadable text
+and uncertain interpretations explicitly. Don't change playback.
 ```
 
 ## Try the local checks
