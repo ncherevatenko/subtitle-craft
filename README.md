@@ -1,6 +1,6 @@
 # Subtitle Craft
 
-![Subtitle Craft compares source audio with an incorrect and corrected Russian subtitle while preserving the timing. Review uses text, audio, and video frames.](assets/subtitle-craft-cover.png)
+![A backstage example: the wish "Break a leg!" is mistranslated as "Сломай ногу!" and corrected to "Ни пуха ни пера!" at the same timing. Review uses text, audio, and video frames.](assets/subtitle-craft-cover-joke.png)
 
 Keep the meaning. Keep the joke. Keep the timing.
 
