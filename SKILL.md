@@ -42,7 +42,9 @@ Preserve the original extracted or downloaded files and their provenance.
 2. Prioritize audible source dialogue, then full source-language subtitles,
    source-language SDH, and the existing target translation. Exact agreement
    between online and embedded subtitles proves text binding, not that every
-   caption correctly transcribes the audio.
+   caption correctly transcribes the audio. Several sites or release labels may
+   redistribute the same caption master; their agreement isn't independent
+   audio evidence. Treat an unverified target translation as a draft.
 3. Align cues by time and scene context, never by cue number alone. Inspect
    separate forced tracks for messages, labels, signs, and foreign dialogue.
    Retain target-only information; don't delete it to match the English count.
@@ -62,8 +64,10 @@ do not automatically replace a translation merely to silence it.
 
 Review meaning before polishing the wording.
 
-Review every spoken source cue, excluding only music markers and non-dialogue
-sound descriptions. For each cue explicitly check:
+Review every spoken source cue. Exclude only music-only or sound-only material;
+when lyrics or sound descriptions share a cue with speech, retain and review
+the speech. Don't discard a whole cue merely because it contains a music symbol.
+Record exclusions and any split-cue mapping. For each cue explicitly check:
 
 - speaker, subject, object, and who acted on whom;
 - negation, modality, uncertainty, tense, and whether an action is planned,

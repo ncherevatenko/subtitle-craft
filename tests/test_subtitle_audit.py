@@ -108,6 +108,52 @@ class SubtitleAuditTests(unittest.TestCase):
         self.assertEqual([audit.is_dialogue(c) for c in audit.parse_srt(path)],
                          [False, False, True])
 
+    def test_music_does_not_hide_missing_spoken_dialogue(self):
+        for text in (
+            '♪ A song ♪\nLeave now.',
+            '♪ A song ♪ Leave now.',
+            '♪ A song ♪ Leave now. ♪ Another verse ♪',
+            '<i>♫ A song ♫</i>\n- Leave now.',
+        ):
+            with self.subTest(text=text):
+                source = self.srt('mixed.srt', [
+                    (1, '00:00:10,000', '00:00:12,000', text),
+                ])
+                before = source.read_bytes()
+                target = self.srt('target.srt', [])
+                result = self.align(source, target)
+                self.assertIn('source_dialogue=1 missing=1', result)
+                self.assertIn('MISSING_TARGET', result)
+                self.assertEqual(source.read_bytes(), before)
+
+    def test_sound_caption_does_not_hide_missing_spoken_dialogue(self):
+        source = self.srt('mixed.srt', [
+            (1, '00:00:10,000', '00:00:12,000', '[door closes]\nLeave now.'),
+        ])
+        target = self.srt('target.srt', [])
+        self.assertIn('source_dialogue=1 missing=1', self.align(source, target))
+
+    def test_multiple_non_dialogue_lines_are_not_missing_speech(self):
+        for text in (
+            '♪ First verse\nSecond verse ♪',
+            '[door closes]\n[phone rings]',
+            '♪ A song ♪\n[phone rings]',
+        ):
+            with self.subTest(text=text):
+                source = self.srt('markers.srt', [
+                    (1, '00:00:10,000', '00:00:12,000', text),
+                ])
+                target = self.srt('target.srt', [])
+                self.assertIn('source_dialogue=0 missing=0',
+                              self.align(source, target))
+
+    def test_unclosed_music_marker_is_reviewed_conservatively(self):
+        source = self.srt('uncertain.srt', [
+            (1, '00:00:10,000', '00:00:12,000', '♪ Unclosed caption'),
+        ])
+        target = self.srt('target.srt', [])
+        self.assertIn('source_dialogue=1 missing=1', self.align(source, target))
+
     def test_numeric_difference_is_only_a_review_prompt(self):
         source = self.srt('source.srt', [
             (1, '00:00:00,000', '00:00:01,000', '12 boats.'),

@@ -33,9 +33,10 @@ RU_REGISTER_RE = re.compile(
     re.IGNORECASE,
 )
 NON_DIALOGUE_RE = re.compile(
-    r"^\s*(?:[♪♫*].*[♪♫*]|\[[^]]+\]|\([^)]*music[^)]*\))\s*$",
+    r"^\s*(?:\*[^*]+\*|\[[^]]+\]|\([^)]*music[^)]*\))\s*$",
     re.IGNORECASE,
 )
+MUSIC_SPAN_RE = re.compile(r"[♪♫][^♪♫]*[♪♫]")
 TAG_RE = re.compile(r"</?[^>]+>|\{\\[^}]+\}")
 
 
@@ -109,10 +110,13 @@ def numbers(text: str) -> set[str]:
 
 
 def is_dialogue(cue: Cue) -> bool:
-    visible = " ".join(cue.visible_lines).strip()
-    if not visible or visible.startswith(("♪", "♫")):
-        return False
-    return not NON_DIALOGUE_RE.fullmatch(visible)
+    # Lyrics and speech can share a cue, even a single line. Remove only
+    # closed music spans; retain ambiguous unclosed markers for review.
+    remainder = MUSIC_SPAN_RE.sub("", "\n".join(cue.visible_lines))
+    return any(
+        line.strip() and not NON_DIALOGUE_RE.fullmatch(line)
+        for line in remainder.splitlines()
+    )
 
 
 def overlaps(source: Cue, target: Cue, tolerance_ms: int) -> bool:

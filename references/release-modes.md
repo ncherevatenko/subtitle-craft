@@ -13,6 +13,9 @@ Prepare useful text while the media is unavailable, without claiming AV proof.
   and record unresolved source wording with timestamps and cue IDs.
 - Keep staged output separate from a final media-bound sidecar. Use a stage
   such as `PREPARED` when the surrounding workflow uses that convention.
+- Preserve a recorded preparation artifact and its checksum when continuing
+  against the completed media. Write a distinct release-bound revision and
+  report rather than overwriting the evidence for the earlier stage.
 - Record reviewed source ranges, dialogue count, retained target-only cues,
   excluded non-dialogue cues, correction counts, and format diagnostics.
 - Set audio and media synchronization coverage to unverified when no media was

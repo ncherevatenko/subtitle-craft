@@ -1,4 +1,4 @@
 interface:
-  display_name: "Subtitle Translation Audit"
+  display_name: "Subtitle Craft"
   short_description: "Strict bilingual subtitle review and validation"
   default_prompt: "Use $subtitle-translation-audit to prepare or audit subtitles, preserving meaning and reporting actual text, audio, and release-verification coverage."
